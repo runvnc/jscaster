@@ -1,0 +1,34 @@
+<!doctype html> 
+<html> 
+<head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta name="description" content="Using Node.js and a bit of jQuery to annoy you." /> 
+  <title> 
+    JS Caster
+  </title> 
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script><script src="mice.js"></script> <link rel="stylesheet" href="mice.css"/> 
+<script>
+function sendjs() {
+  if (conn) {
+    var cm = $('#cmds').val();
+    if (cm.indexOf('alert')==-1) {
+      conn.send(JSON.stringify({'action':'eval', 'js':cm}));
+      eval(cm);
+    }
+  }
+}
+
+</script>
+</head>
+<body>
+<p>Based on http://jeffkreeftmeijer.com/2010/experimenting-with-node-js/ with the addition of JavaScript broadcasting and eval.</p>
+<p><i>This system is completely open and unrestricted.  Use at your own risk.  Please consider not disabling my server or doing things that idiots, eight-year-olds or criminals would find amusing.</i>  Also, instead of alerts, use something like $('#msg').append('my text') (alerts causing weird infinite dialog problem in Chrome so any JS with alert in it is not sent).</p>
+<p>JavaScript (including jQuery) you enter here is broadcast and eval'd by all clients.  To save data use save.php (source of save.php: file_put_contents($_GET['filename'], $_POST['data'])) or append.php (same but with FILE_APPEND). Directory index is readable.</p>
+<textarea id="cmds" cols="70" rows="8">
+</textarea>
+<input value="Broadcast JavaScript" type="button" onClick="sendjs()"/>
+
+<div id="msg"></div>
+
+</body>
+</html>
